@@ -1,1 +1,2 @@
-# NRAE-public
+# Neighborhood Reconstructing Autoencoder
+### We provide two simple examples that illustrate denoising and geometry preserving properties of NRAE. Please see the ipython notebooks in notebook directory.
