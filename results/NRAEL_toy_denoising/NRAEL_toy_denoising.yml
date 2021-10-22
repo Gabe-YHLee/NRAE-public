@@ -1,0 +1,56 @@
+data:
+  test:
+    batch_size: 32
+    dataset: toy_noisy
+    noise_level: 0.0
+    num_data: 1000
+    split: test
+    type: sincurve
+  training:
+    batch_size: 32
+    dataset: toy_noisy
+    graph:
+      bs_nn: 2
+      include_center: false
+      num_nn: 10
+      replace: true
+    noise_level: 0.3
+    num_data: 50
+    split: training
+    type: sincurve
+device: cuda:0
+exp_name: NRAEL_toy_denoising
+logdir: results/NRAEL_toy_denoising
+model:
+  arch: nrael
+  decoder:
+    activation:
+    - elu
+    - elu
+    - elu
+    arch: fc_vec
+    l_hidden:
+    - 512
+    - 512
+    - 512
+    out_activation: linear
+  encoder:
+    activation:
+    - elu
+    - elu
+    - elu
+    arch: fc_vec
+    l_hidden:
+    - 512
+    - 512
+    - 512
+    out_activation: linear
+  kernel:
+    lambda: 0.01
+    type: binary
+  x_dim: 2
+  z_dim: 1
+optimizer:
+  lr: 0.001
+training:
+  num_epochs: 2001
