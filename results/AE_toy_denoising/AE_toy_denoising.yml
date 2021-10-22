@@ -1,14 +1,14 @@
 data:
   test:
     batch_size: 32
-    dataset: toy_noisy
+    dataset: synthetic
     noise_level: 0.0
     num_data: 1000
     split: test
     type: sincurve
   training:
     batch_size: 32
-    dataset: toy_noisy
+    dataset: synthetic
     noise_level: 0.3
     num_data: 50
     split: training
