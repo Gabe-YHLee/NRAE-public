@@ -1,0 +1,42 @@
+exp_name: NRAEL_toy_geometry_preserving
+data:
+  training:
+    split: training
+    dataset: synthetic
+    type: swiss_role
+    num_data: 30
+    noise_level: 0.01
+    batch_size: 16
+    graph: 
+      include_center: True
+      replace: False
+      num_nn: 2
+      bs_nn: 2
+  test:
+    split: test
+    dataset: synthetic
+    type: swiss_role
+    num_data: 1000
+    noise_level: 0.0
+    batch_size: 16
+model:
+  arch: nrael
+  encoder:
+      arch: fc_vec
+      l_hidden: [512, 512, 512, ]
+      activation: ['elu', 'elu', 'elu', ]
+      out_activation: 'linear'
+  decoder:
+      arch: fc_vec
+      l_hidden: [512, 512, 512, ]
+      activation: ['elu', 'elu', 'elu', ]
+      out_activation: 'linear'
+  x_dim: 2
+  z_dim: 1
+  kernel: 
+    type: 'binary'
+    lambda: 0.5
+optimizer:
+  lr: 0.001
+training:
+  num_epochs: 2001

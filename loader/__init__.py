@@ -1,4 +1,4 @@
-from loader.toy_noisy_dataset import NoisySinCurve
+from loader.synthetic_dataset import SyntheticData
 from torch.utils import data
 
 def get_dataloader(data_dict, **kwargs):
@@ -13,6 +13,6 @@ def get_dataloader(data_dict, **kwargs):
 
 def get_dataset(data_dict):
     name = data_dict["dataset"]
-    if name == 'toy_noisy':
-        dataset = NoisySinCurve(**data_dict)
+    if name == 'synthetic':
+        dataset = SyntheticData(**data_dict)
     return dataset

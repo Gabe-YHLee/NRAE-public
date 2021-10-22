@@ -1,0 +1,48 @@
+data:
+  test:
+    batch_size: 16
+    dataset: synthetic
+    noise_level: 0.0
+    num_data: 1000
+    split: test
+    type: swiss_role
+  training:
+    batch_size: 16
+    dataset: synthetic
+    noise_level: 0.01
+    num_data: 30
+    split: training
+    type: swiss_role
+device: cuda:0
+exp_name: AE_toy_geometry_preserving
+logdir: results/AE_toy_geometry_preserving
+model:
+  arch: ae
+  decoder:
+    activation:
+    - elu
+    - elu
+    - elu
+    arch: fc_vec
+    l_hidden:
+    - 512
+    - 512
+    - 512
+    out_activation: linear
+  encoder:
+    activation:
+    - elu
+    - elu
+    - elu
+    arch: fc_vec
+    l_hidden:
+    - 512
+    - 512
+    - 512
+    out_activation: linear
+  x_dim: 2
+  z_dim: 1
+optimizer:
+  lr: 0.001
+training:
+  num_epochs: 2001

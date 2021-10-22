@@ -2,7 +2,7 @@ exp_name: NRAEL_toy_denoising
 data:
   training:
     split: training
-    dataset: toy_noisy
+    dataset: synthetic
     type: sincurve
     num_data: 50
     noise_level: 0.3
@@ -14,7 +14,7 @@ data:
       bs_nn: 2
   test:
     split: test
-    dataset: toy_noisy
+    dataset: synthetic
     type: sincurve
     num_data: 1000
     noise_level: 0.0

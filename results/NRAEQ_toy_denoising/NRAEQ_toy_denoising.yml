@@ -1,18 +1,18 @@
 data:
   test:
     batch_size: 32
-    dataset: toy_noisy
+    dataset: synthetic
     noise_level: 0.0
     num_data: 1000
     split: test
     type: sincurve
   training:
     batch_size: 32
-    dataset: toy_noisy
+    dataset: synthetic
     graph:
       bs_nn: 2
       include_center: false
-      num_nn: 8
+      num_nn: 10
       replace: true
     noise_level: 0.3
     num_data: 50

@@ -78,7 +78,7 @@ def run(cfg):
         if epoch > 0.8*cfg['training']['num_epochs']:
             scheduler.step()
         
-        if ((epoch)%40 == 0) or (epoch < 40):
+        if ((epoch)%40 == 0) or (epoch < 30):
             image_array = model.visualize(
                 epoch,
                 sum(training_loss)/len(training_loss),

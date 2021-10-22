@@ -7,8 +7,7 @@ from models.ae import (
     NRAE
 )
 from models.modules import (
-    FC_vec,
-    FC_image
+    FC_vec
 )
 
 def get_net(in_dim, out_dim, **kwargs):

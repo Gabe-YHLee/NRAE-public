@@ -193,7 +193,7 @@ class NRAE(AE):
         
         plotted = 0
         plotted2 = 0
-        for idx_of_interest in [10, 35]:
+        for idx_of_interest in [int(0.2*len(training_data)), int(0.7*len(training_data))]:
             x_c = training_data[idx_of_interest:idx_of_interest+1]
             z_c = self.encoder(x_c.to(device))
             x_nn = training_data[self.dist_indices[idx_of_interest]]
@@ -212,7 +212,7 @@ class NRAE(AE):
             z_min_ = z_nn.view(-1).min().item()
             z_max_ = z_nn.view(-1).max().item()    
             z_coordinates = torch.tensor(
-                    np.linspace(z_min_ - 0.2, z_max_ + 0.2, 1000), 
+                    np.linspace(z_min_ - 0.3, z_max_ + 0.3, 1000), 
                     dtype=torch.float32).to(device).unsqueeze(0).unsqueeze(2)    
             n_recons = self.neighborhood_recon(z_c, z_coordinates)[0].detach().cpu()
             plt.scatter(x_c[:, 0], x_c[:, 1], c='tab:green')
