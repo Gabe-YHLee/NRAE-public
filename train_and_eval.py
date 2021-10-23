@@ -1,22 +1,15 @@
-import numpy as np
-
 import os
 import random
+import numpy as np
+import matplotlib.pyplot as plt
 import torch
-
+import imageio
 import argparse
 import yaml
-from itertools import cycle
-from datetime import datetime
 from omegaconf import OmegaConf
-    
 from loader import get_dataset, get_dataloader
 from models import get_model
 
-import imageio
-from PIL import Image
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 
 def run(cfg):
     # Setup seeds
@@ -57,10 +50,7 @@ def run(cfg):
     # Iterative Model Update
     params = {k: v for k, v in cfg['optimizer'].items() if k != "name"}
     optimizer = torch.optim.Adam(model.parameters(), **params)
-    scheduler = torch.optim.lr_scheduler.StepLR(
-        optimizer, 
-        step_size=10, 
-        gamma=0.9)
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.9)
     
     list_of_images = []
     for epoch in range(cfg['training']['num_epochs']):
@@ -91,10 +81,7 @@ def run(cfg):
     # Convert Images to GIF
     f = plt.figure()
     model_name = cfg['model']['arch'].upper()
-    plt.text(
-        0.5, 0.5, 
-        f'{model_name} Training', 
-        size=24, ha='center', va='center')
+    plt.text(0.5, 0.5, f'{model_name} Training', size=24, ha='center', va='center')
     plt.axis('off')
     f.canvas.draw()
     f_arr = np.array(f.canvas.renderer._renderer)

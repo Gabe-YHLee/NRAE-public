@@ -1,6 +1,4 @@
-import copy
 import numpy as np
-import torch
 
 from models.ae import (
     AE,
@@ -16,17 +14,6 @@ def get_net(in_dim, out_dim, **kwargs):
         activation = kwargs["activation"]
         out_activation = kwargs["out_activation"]
         net = FC_vec(
-            in_chan=in_dim,
-            out_chan=out_dim,
-            l_hidden=l_hidden,
-            activation=activation,
-            out_activation=out_activation,
-        )
-    elif kwargs["arch"] == "fc_image":
-        l_hidden = kwargs["l_hidden"]
-        activation = kwargs["activation"]
-        out_activation = kwargs["out_activation"]
-        net = FC_image(
             in_chan=in_dim,
             out_chan=out_dim,
             l_hidden=l_hidden,

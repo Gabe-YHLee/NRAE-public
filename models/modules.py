@@ -1,6 +1,4 @@
 import torch.nn as nn
-import torch.nn.functional as F
-import numpy as np
 
 def get_activation(s_act):
     if s_act == "relu":

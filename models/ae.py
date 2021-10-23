@@ -1,11 +1,7 @@
-import matplotlib
 import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-from torchvision.utils import make_grid
 import matplotlib.pyplot as plt
-from matplotlib import collections  as mc
 
 def get_kernel_function(kernel):
     if kernel['type'] == 'binary':
@@ -20,8 +16,8 @@ def get_kernel_function(kernel):
             index = torch.norm(x_c.unsqueeze(1)-x_nn, dim=2) > eps
             output = torch.ones(bs, num_nn).to(x_c)
             output[~index] = kernel['lambda']
-            return output # size: (bs, num_nn)
-        return kernel_func
+            return output # (bs, num_nn)
+    return kernel_func
     
 class AE(nn.Module):
     def __init__(self, encoder, decoder):
@@ -52,19 +48,14 @@ class AE(nn.Module):
         min_ = encoded.min().item()
         max_ = encoded.max().item()
 
-        z_data = torch.tensor(
-            np.linspace(min_,max_, 10000), 
-            dtype=torch.float32).to(device).unsqueeze(1)
+        z_data = torch.tensor(np.linspace(min_,max_, 10000), dtype=torch.float32).to(device).unsqueeze(1)
         gen_data = self.decoder(z_data).detach().cpu()
         recon_data = self.decoder(self.encoder(training_data.to(device))).detach().cpu()
         f = plt.figure()
         plt.plot(test_data[:, 0], test_data[:, 1], '--', linewidth=5 , c='k', label='data manifold')
         plt.plot(gen_data[:, 0], gen_data[:, 1], linewidth=5, c='tab:orange', label='learned manifold')
         for i in range(len(training_data)):
-            line_arg = [
-                (training_data[i][0], recon_data[i][0]), 
-                (training_data[i][1], recon_data[i][1]), 
-                '--']
+            line_arg = [(training_data[i][0], recon_data[i][0]), (training_data[i][1], recon_data[i][1]), '--']
             line_kwarg = {'c': 'r'}
             if i == 0:
                 line_kwarg['label'] = 'point recon loss'
@@ -92,17 +83,9 @@ class NRAE(AE):
         num_nn = dz.size(1)
         z_dim = dz.size(2)
 
-        v = dz.view(-1, z_dim)  # bs * num_nn , z_dim
-        inputs = (
-            z.unsqueeze(1).repeat(1, num_nn, 1).view(-1, z_dim)
-        )  # bs * num_nn , z_dim
-
-        jac = torch.autograd.functional.jvp(
-            self.decoder, inputs, v=v, create_graph=create_graph
-        )[1].view(
-            batch_size, num_nn, -1
-        )  # bs, num_nn, ::
-
+        v = dz.view(-1, z_dim)  # (bs * num_nn , z_dim)
+        inputs = (z.unsqueeze(1).repeat(1, num_nn, 1).view(-1, z_dim))  # (bs * num_nn , z_dim)
+        jac = torch.autograd.functional.jvp(self.decoder, inputs, v=v, create_graph=create_graph)[1].view(batch_size, num_nn, -1)
         return jac        
 
     def jacobian_and_hessian(self, z, dz, create_graph=True):
@@ -110,33 +93,25 @@ class NRAE(AE):
         num_nn = dz.size(1)
         z_dim = dz.size(2)
 
-        v = dz.view(-1, z_dim)  # bs * num_nn , z_dim
-        inputs = (
-            z.unsqueeze(1).repeat(1, num_nn, 1).view(-1, z_dim)
-        )  # bs * num_nn , z_dim
+        v = dz.view(-1, z_dim)  # (bs * num_nn , z_dim)
+        inputs = (z.unsqueeze(1).repeat(1, num_nn, 1).view(-1, z_dim))  # (bs * num_nn , z_dim)
 
         def jac_temp(inputs):
-            jac = torch.autograd.functional.jvp(
-                self.decoder, inputs, v=v, create_graph=create_graph
-            )[1].view(
-                batch_size, num_nn, -1
-            )  # bs, num_nn, ::
+            jac = torch.autograd.functional.jvp(self.decoder, inputs, v=v, create_graph=create_graph)[1].view(batch_size, num_nn, -1)
             return jac
 
-        temp = torch.autograd.functional.jvp(
-            jac_temp, inputs, v=v, create_graph=create_graph
-        )
+        temp = torch.autograd.functional.jvp(jac_temp, inputs, v=v, create_graph=create_graph)
 
         jac = temp[0].view(batch_size, num_nn, -1)
-        hessian = temp[1].view(batch_size, num_nn, -1)  # bs, num_nears, ::
+        hessian = temp[1].view(batch_size, num_nn, -1)
         return jac, hessian
         
     def neighborhood_recon(self, z_c, z_nn):
         recon = self.decoder(z_c)
-        recon_x = recon.view(z_c.size(0), -1).unsqueeze(1)  # bs, 1, x_dim
-        dz = z_nn - z_c.unsqueeze(1)  # bs, num_near, z_dim
+        recon_x = recon.view(z_c.size(0), -1).unsqueeze(1)  # (bs, 1, x_dim)
+        dz = z_nn - z_c.unsqueeze(1)  # (bs, num_nn, z_dim)
         if self.approx_order == 1:
-            Jdz = self.jacobian(z_c, dz)  # bs, num_near, x_dim
+            Jdz = self.jacobian(z_c, dz)  # (bs, num_nn, x_dim)
             n_recon = recon_x + Jdz
         elif self.approx_order == 2:
             Jdz, dzHdz = self.jacobian_and_hessian(z_c, dz)
@@ -146,35 +121,26 @@ class NRAE(AE):
     def train_step(self, x_c, x_nn, optimizer, **kwargs):
         optimizer.zero_grad()
         bs = x_nn.size(0)
-        num_near = x_nn.size(1)
+        num_nn = x_nn.size(1)
 
         z_c = self.encoder(x_c)
         z_dim = z_c.size(1)
-        z_nn = self.encoder(
-            x_nn.view(
-                [-1] + list(x_nn.size()[2:]))
-            ).view(bs, -1, z_dim)
-
+        z_nn = self.encoder(x_nn.view([-1] + list(x_nn.size()[2:]))).view(bs, -1, z_dim)
         n_recon = self.neighborhood_recon(z_c, z_nn)
-        
-        n_loss = torch.norm(x_nn.view(bs, num_near, -1) - n_recon, dim=2) ** 2
+        n_loss = torch.norm(x_nn.view(bs, num_nn, -1) - n_recon, dim=2)**2
         weights = self.kernel_func(x_c, x_nn)
         loss = (weights*n_loss).mean()
         loss.backward()
         optimizer.step()
 
-        return {
-            "loss": loss.item(),
-        }
+        return {"loss": loss.item()}
 
     def visualize(self, epoch, training_loss, training_data, test_data, device):
         encoded = self.encoder(training_data.to(device))
         min_ = encoded.min().item()
         max_ = encoded.max().item()
 
-        z_data = torch.tensor(
-            np.linspace(min_, max_, 10000), 
-            dtype=torch.float32).to(device).unsqueeze(1)
+        z_data = torch.tensor(np.linspace(min_, max_, 10000), dtype=torch.float32).to(device).unsqueeze(1)
         gen_data = self.decoder(z_data).detach().cpu()
         recon_data = self.decoder(self.encoder(training_data.to(device))).detach().cpu()
         f = plt.figure()
@@ -182,10 +148,7 @@ class NRAE(AE):
         plt.plot(gen_data[:, 0], gen_data[:, 1], linewidth=5, c='tab:orange', label='learned manifold')
         plt.scatter(training_data[:, 0], training_data[:, 1], s=50, label='training data')
         for i in range(len(training_data)):
-            line_arg = [
-                (training_data[i][0], recon_data[i][0]), 
-                (training_data[i][1], recon_data[i][1]), 
-                '--']
+            line_arg = [(training_data[i][0], recon_data[i][0]), (training_data[i][1], recon_data[i][1]), '--']
             line_kwarg = {'c': 'r', 'alpha': 0.1}
             if i == 0:
                 line_kwarg['label'] = 'point recon loss'
@@ -200,10 +163,7 @@ class NRAE(AE):
             z_nn = self.encoder(x_nn.to(device))
             z_nn_recons = self.neighborhood_recon(z_c, z_nn.unsqueeze(0))[0].detach().cpu()
             for i in range(len(x_nn)):
-                line_arg = [
-                    (x_nn[i][0], z_nn_recons[i][0]), 
-                    (x_nn[i][1], z_nn_recons[i][1]), 
-                    '--']
+                line_arg = [(x_nn[i][0], z_nn_recons[i][0]), (x_nn[i][1], z_nn_recons[i][1]), '--']
                 line_kwarg = {'c': 'tab:green'}
                 if plotted == 0:
                     line_kwarg['label'] = 'neighborhood recon loss'
@@ -211,10 +171,8 @@ class NRAE(AE):
                 plt.plot(*line_arg, **line_kwarg) 
             z_min_ = z_nn.view(-1).min().item()
             z_max_ = z_nn.view(-1).max().item()    
-            z_coordinates = torch.tensor(
-                    np.linspace(z_min_ - 0.3, z_max_ + 0.3, 1000), 
-                    dtype=torch.float32).to(device).unsqueeze(0).unsqueeze(2)    
-            n_recons = self.neighborhood_recon(z_c, z_coordinates)[0].detach().cpu()
+            z_coordinates = torch.tensor(np.linspace(z_min_ - 0.3, z_max_ + 0.3, 1000), dtype=torch.float32).to(device)    
+            n_recons = self.neighborhood_recon(z_c, z_coordinates.unsqueeze(0).unsqueeze(2))[0].detach().cpu()
             plt.scatter(x_c[:, 0], x_c[:, 1], c='tab:green')
             if plotted2 == 0:
                 plt.plot(n_recons[:, 0], n_recons[:, 1], linewidth=5, c='tab:green', label='local approx. manifold')
