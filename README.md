@@ -9,18 +9,18 @@ Arxiv: [TBU]()
 # Preview (synthetic data)
 <center>
 <div class="imgCollage">
-<span style="width: 31.8%"><img src="./results/AE_toy_denoising/AE_training.gif" width="280 height="200"/></span>
-<span style="width: 31.8%"><img src="./results/NRAEL_toy_denoising/NRAEL_training.gif" width="280 height="200"/> </span>
-<span style="width: 31.8%"><img src="./results/NRAEQ_toy_denoising/NRAEQ_training.gif" width="280 height="200"/> </span>
+<span style="width: 31.8%"><img src="./results/AE_toy_denoising/AE_training.gif" width="250 height="190"/></span>
+<span style="width: 31.8%"><img src="./results/NRAEL_toy_denoising/NRAEL_training.gif" width="250 height="190"/> </span>
+<span style="width: 31.8%"><img src="./results/NRAEQ_toy_denoising/NRAEQ_training.gif" width="250 height="190"/> </span>
 </div>
   <I>Figure 1: De-noising property of the NRAE (Left: Vanilla AE, Middle: NRAE-L, Right: NRAE-Q). </I>
 </center>
 
 <center>
 <div class="imgCollage">
-<span style="width: 31.8%"><img src="./results/AE_toy_geometry_preserving/AE_training.gif" width="280 height="200"/></span>
-<span style="width: 31.8%"><img src="./results/NRAEL_toy_geometry_preserving/NRAEL_training.gif" width="280 height="200"/> </span>
-<span style="width: 31.8%"><img src="./results/NRAEQ_toy_geometry_preserving/NRAEQ_training.gif" width="280 height="200"/> </span>
+<span style="width: 31.8%"><img src="./results/AE_toy_geometry_preserving/AE_training.gif" width="250 height="190"/></span>
+<span style="width: 31.8%"><img src="./results/NRAEL_toy_geometry_preserving/NRAEL_training.gif" width="250 height="190"/> </span>
+<span style="width: 31.8%"><img src="./results/NRAEQ_toy_geometry_preserving/NRAEQ_training.gif" width="250 height="190"/> </span>
 </div>
   <I>Figure 2: Correct local connectivity learned by the NRAE (Left: Vanilla AE, Middle: NRAE-L, Right: NRAE-Q).</I>
 </center>
