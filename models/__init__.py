@@ -20,6 +20,19 @@ def get_net(in_dim, out_dim, **kwargs):
             activation=activation,
             out_activation=out_activation,
         )
+    elif kwargs["arch"] == "fc_image":
+        l_hidden = kwargs["l_hidden"]
+        activation = kwargs["activation"]
+        out_activation = kwargs["out_activation"]
+        out_chan_num = kwargs["out_chan_num"]
+        net = FC_vec(
+            in_chan=in_dim,
+            out_chan=out_dim,
+            l_hidden=l_hidden,
+            activation=activation,
+            out_activation=out_activation,
+            out_chan_num=out_chan_num
+        )
     return net
 
 def get_ae(**model_cfg):

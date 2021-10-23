@@ -69,7 +69,7 @@ def run(cfg):
             scheduler.step()
         
         if ((epoch)%40 == 0) or (epoch < 30):
-            image_array = model.visualize(
+            image_array = model.synthetic_visualize(
                 epoch,
                 sum(training_loss)/len(training_loss),
                 d_datasets['training'].data, 

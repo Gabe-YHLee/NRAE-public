@@ -43,7 +43,7 @@ class AE(nn.Module):
         optimizer.step()
         return {"loss": loss.item()}
 
-    def visualize(self, epoch, training_loss, training_data, test_data, device):
+    def synthetic_visualize(self, epoch, training_loss, training_data, test_data, device):
         encoded = self.encoder(training_data.to(device))
         min_ = encoded.min().item()
         max_ = encoded.max().item()
@@ -135,7 +135,7 @@ class NRAE(AE):
 
         return {"loss": loss.item()}
 
-    def visualize(self, epoch, training_loss, training_data, test_data, device):
+    def synthetic_visualize(self, epoch, training_loss, training_data, test_data, device):
         encoded = self.encoder(training_data.to(device))
         min_ = encoded.min().item()
         max_ = encoded.max().item()

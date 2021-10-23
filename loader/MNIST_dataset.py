@@ -1,0 +1,3 @@
+'''
+rotated/shifted MNIST dataset
+'''

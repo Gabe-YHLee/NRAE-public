@@ -1,0 +1,3 @@
+'''
+MNIST training code
+'''
