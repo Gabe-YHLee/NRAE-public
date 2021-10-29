@@ -3,8 +3,11 @@ The official repository for \<Neighborhood Reconstructing Autoencoders\> (Lee, K
 
 > This paper proposes Neighborhood Reconstructing Autoencoders (NRAE), which is a **graph**-based autoencoder that explicitly accounts for the **local connectivity and geometry** of the data, and consequently learns a **more accurate data manifold and representation**.
 
-Arxiv: [TBU]()  
+Paper: [TBU]()  
 15-mins video: [TBU]()
+Slides: [./doc/NRAE_talk.pdf](./doc/NRAE_talk.pdf)
+Poster: [TBU]()
+OpenReview: [TBU]()
 
 ## Preview (synthetic data)
 <center>
