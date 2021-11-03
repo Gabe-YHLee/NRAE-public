@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import torch
 import torch.nn as nn
@@ -12,6 +13,8 @@ def get_kernel_function(kernel):
             '''
             bs = x_nn.size(0)
             num_nn = x_nn.size(1)
+            x_c = x_c.view(bs, -1)
+            x_nn = x_nn.view(bs, num_nn, -1)
             eps = 1.0e-12
             index = torch.norm(x_c.unsqueeze(1)-x_nn, dim=2) > eps
             output = torch.ones(bs, num_nn).to(x_c)
@@ -69,6 +72,69 @@ class AE(nn.Module):
         f_arr = np.array(f.canvas.renderer._renderer)
         plt.close()
         return f_arr
+
+    def mnist_visualize(self, data, device, sroot, n_vis_step=16):
+        os.makedirs(sroot, exist_ok=True)
+        import imageio
+        def make_frame(img):
+            _, h, w = img.size()
+            for c_ in range(3):
+                if c_ == 0:
+                    color = 1
+                else:
+                    color = 0
+                img[c_, 0, :] = color
+                img[c_, h-1, :] = color
+                img[c_, :, 0] = color
+                img[c_, :, w-1] = color
+            return img
+        vis_data = []
+        for i, idx in enumerate(range(0, len(data), len(data) // n_vis_step)):
+            if i >= n_vis_step:
+                break
+            vis_data.append(data[idx])
+        vis_data = torch.stack(vis_data, dim=0)
+        encoded = self.encoder(vis_data.to(device))
+        _ , index_order = torch.sort(encoded.view(-1), 0)
+        ascending_ordered_z = encoded[index_order]
+        recon_data = self.decoder(ascending_ordered_z).detach().cpu().repeat(1,3,1,1)
+        total_vis_num = recon_data.size(0)
+        plt.figure(figsize=(16,3))
+        plt.suptitle('decoded images', x=0.51, y=0.52)
+        for i in range(total_vis_num):
+            plt.subplot(2,total_vis_num,i+total_vis_num+1)
+            plt.axis('off')
+        plt.subplot(211, title='1d latent space')
+        plt.subplot(211)
+        plt.axis('off')
+        start = -0.5
+        end = 0.5
+        dis = (end - start) / total_vis_num 
+        x = np.linspace(-0.6,0.5,total_vis_num)
+        y = 0*x
+        plt.plot(x, y, 'black')
+        for i in range(total_vis_num):
+            for j in range(total_vis_num):
+                if j < i:
+                    plt.subplot(211)
+                    plt.plot(start + j * dis, 0, 'bo', markersize=12)
+                    plt.subplot(2,total_vis_num,j+total_vis_num+1)
+                    plt.imshow(recon_data[j].permute(1,2,0))
+                elif j == i:
+                    plt.subplot(211)
+                    plt.plot(start + j * dis, 0, 'ro', markersize=12)
+                    plt.subplot(2,total_vis_num,i+total_vis_num+1)
+                    plt.imshow(make_frame(recon_data[j].clone()).permute(1,2,0))
+                else:
+                    plt.subplot(2,total_vis_num,j+total_vis_num+1)
+                    plt.imshow(torch.ones(3,28,28).permute(1,2,0))
+            plt.savefig(os.path.join(sroot, str(i).zfill(3) + '.png'))
+
+        images = []
+        file_list = [i for i in os.listdir(sroot) if i.endswith('.png')]
+        for file_name in sorted(file_list):
+            images.append(imageio.imread(os.path.join(sroot, file_name)))
+        imageio.mimsave(os.path.join(sroot, f'{type(self).__name__}.gif'), images, duration=0.8)
 
 class NRAE(AE):
     def __init__(self, encoder, decoder, approx_order=1, kernel=None):

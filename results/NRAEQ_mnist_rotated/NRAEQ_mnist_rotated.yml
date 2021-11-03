@@ -1,0 +1,48 @@
+data:
+  training:
+    batch_size: 50
+    dataset: mnist
+    digit: 7
+    graph:
+      bs_nn: 2
+      include_center: false
+      num_nn: 30
+      replace: true
+    root: ./dataset
+    type: rotate
+device: cuda:1
+exp_name: NRAEQ_mnist_rotated
+logdir: results/NRAEQ_mnist_rotated
+model:
+  arch: nraeq
+  decoder:
+    activation:
+    - elu
+    - elu
+    - elu
+    arch: fc_image
+    l_hidden:
+    - 512
+    - 512
+    - 512
+    out_activation: linear
+  encoder:
+    activation:
+    - elu
+    - elu
+    - elu
+    arch: fc_image
+    l_hidden:
+    - 512
+    - 512
+    - 512
+    out_activation: linear
+  kernel:
+    lambda: 0.01
+    type: binary
+  x_dim: 784
+  z_dim: 1
+optimizer:
+  lr: 0.0001
+training:
+  num_epochs: 2001

@@ -1,0 +1,34 @@
+exp_name: NRAEL_mnist_rotated
+data:
+  training:
+    dataset: mnist
+    root: './dataset'
+    type: rotate
+    digit: 7
+    batch_size: 50
+    graph: 
+      include_center: False
+      replace: True
+      num_nn: 30
+      bs_nn: 2
+model:
+  arch: nrael
+  encoder:
+      arch: fc_image
+      l_hidden: [512, 512, 512, ]
+      activation: ['elu', 'elu', 'elu', ]
+      out_activation: 'linear'
+  decoder:
+      arch: fc_image
+      l_hidden: [512, 512, 512, ]
+      activation: ['elu', 'elu', 'elu', ]
+      out_activation: 'linear'
+  x_dim: 784
+  z_dim: 1
+  kernel: 
+    type: 'binary'
+    lambda: 0.01 
+optimizer:
+  lr: 0.0001
+training:
+  num_epochs: 2001

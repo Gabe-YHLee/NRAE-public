@@ -5,7 +5,8 @@ from models.ae import (
     NRAE
 )
 from models.modules import (
-    FC_vec
+    FC_vec,
+    FC_image
 )
 
 def get_net(in_dim, out_dim, **kwargs):
@@ -24,14 +25,12 @@ def get_net(in_dim, out_dim, **kwargs):
         l_hidden = kwargs["l_hidden"]
         activation = kwargs["activation"]
         out_activation = kwargs["out_activation"]
-        out_chan_num = kwargs["out_chan_num"]
-        net = FC_vec(
+        net = FC_image(
             in_chan=in_dim,
             out_chan=out_dim,
             l_hidden=l_hidden,
             activation=activation,
             out_activation=out_activation,
-            out_chan_num=out_chan_num
         )
     return net
 
