@@ -1,15 +1,14 @@
 data:
   training:
-    batch_size: 50
+    batch_size: 10
     dataset: mnist
     digit: 3
-    num_rotate: 100
     root: ./dataset
-    rotate_range: 180
-    type: rotate
+    shift_range: 10
+    type: shift
 device: cuda:1
-exp_name: AE_mnist_rotated
-logdir: results/AE_mnist_rotated
+exp_name: AE_mnist_shifted
+logdir: results/AE_mnist_shifted
 model:
   arch: ae
   decoder:

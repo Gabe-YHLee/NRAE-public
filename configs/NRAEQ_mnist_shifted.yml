@@ -1,15 +1,19 @@
-exp_name: AE_mnist_rotated
+exp_name: NRAEQ_mnist_shifted
 data:
   training:
     dataset: mnist
     root: './dataset'
-    type: rotate
-    num_rotate: 100
-    rotate_range: 180
+    type: shift
+    shift_range: 10
     digit: 3
-    batch_size: 50
+    batch_size: 10
+    graph: 
+      include_center: True
+      replace: False
+      num_nn: 5
+      bs_nn: 2
 model:
-  arch: ae
+  arch: nraeq
   encoder:
       arch: fc_image
       l_hidden: [1024, 1024, 1024, ]
@@ -22,6 +26,9 @@ model:
       out_activation: 'sigmoid'
   x_dim: 784
   z_dim: 1
+  kernel: 
+    type: 'binary'
+    lambda: 0.01 
 optimizer:
   lr: 0.0001
 training:

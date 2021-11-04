@@ -2,13 +2,15 @@ data:
   training:
     batch_size: 50
     dataset: mnist
-    digit: 7
+    digit: 3
     graph:
       bs_nn: 2
-      include_center: false
-      num_nn: 16
-      replace: true
+      include_center: true
+      num_nn: 5
+      replace: false
+    num_rotate: 100
     root: ./dataset
+    rotate_range: 180
     type: rotate
 device: cuda:1
 exp_name: NRAEL_mnist_rotated
@@ -25,7 +27,7 @@ model:
     - 1024
     - 1024
     - 1024
-    out_activation: linear
+    out_activation: sigmoid
   encoder:
     activation:
     - elu
@@ -38,7 +40,7 @@ model:
     - 1024
     out_activation: linear
   kernel:
-    lambda: 0.0001
+    lambda: 0.01
     type: binary
   x_dim: 784
   z_dim: 1

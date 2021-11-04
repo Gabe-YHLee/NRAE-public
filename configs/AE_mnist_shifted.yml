@@ -1,13 +1,12 @@
-exp_name: AE_mnist_rotated
+exp_name: AE_mnist_shifted
 data:
   training:
     dataset: mnist
     root: './dataset'
-    type: rotate
-    num_rotate: 100
-    rotate_range: 180
+    type: shift
+    shift_range: 10
     digit: 3
-    batch_size: 50
+    batch_size: 10
 model:
   arch: ae
   encoder:
