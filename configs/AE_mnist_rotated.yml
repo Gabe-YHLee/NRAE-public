@@ -17,7 +17,7 @@ model:
       arch: fc_image
       l_hidden: [1024, 1024, 1024, ]
       activation: ['elu', 'elu', 'elu', ]
-      out_activation: 'linear'
+      out_activation: 'sigmoid'
   x_dim: 784
   z_dim: 1
 optimizer:

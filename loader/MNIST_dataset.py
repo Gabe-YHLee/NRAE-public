@@ -22,17 +22,14 @@ class RotatedShiftedMNIST(MNIST):
 
         assert type in ["rotate", "shift"]
 
-        # Dataset download and loading
-        self.root = root
-        if download:
-            self.download()
-        if not self._check_exists():
-            raise RuntimeError(
-                "Dataset not found." + " You can use download=True to download it"
-            )
-        data, targets = torch.load(
-            os.path.join(self.processed_folder, self.training_file)
+        super(RotatedShiftedMNIST, self).__init__(
+            root,
+            download=download,
         )
+
+        data = self.data
+        targets = self.targets
+
         data = (data.to(torch.float32) / 255).unsqueeze(1) # [data_size, 1, 28, 28]
 
         for idx, target in enumerate(targets):
@@ -54,7 +51,7 @@ class RotatedShiftedMNIST(MNIST):
         if type == 'rotate':
             num_rotate = 100
             for rot in [180*i/num_rotate for i in range(num_rotate)]:
-                transformed_data = transforms.functional.affine(img=data, angle=rot, translate=[0, 0], scale=0.5, shear=0)
+                transformed_data = transforms.functional.affine(img=data, angle=rot, translate=[0, 0], scale=1., shear=0)
                 data_list.append(transformed_data)
         elif type == 'shift':
             shift_range=[-10,10]
@@ -97,11 +94,3 @@ class RotatedShiftedMNIST(MNIST):
         else:
             x = self.data[idx]
             return x
-        
-    @property
-    def raw_folder(self):
-        return os.path.join(self.root, "MNIST", "raw")
-
-    @property
-    def processed_folder(self):
-        return os.path.join(self.root, "MNIST", "processed")

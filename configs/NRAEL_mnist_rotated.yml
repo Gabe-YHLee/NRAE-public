@@ -7,8 +7,8 @@ data:
     digit: 7
     batch_size: 50
     graph: 
-      include_center: False
-      replace: True
+      include_center: True
+      replace: False
       num_nn: 16
       bs_nn: 2
 model:
@@ -22,7 +22,7 @@ model:
       arch: fc_image
       l_hidden: [1024, 1024, 1024, ]
       activation: ['elu', 'elu', 'elu', ]
-      out_activation: 'linear'
+      out_activation: 'sigmoid'
   x_dim: 784
   z_dim: 1
   kernel: 

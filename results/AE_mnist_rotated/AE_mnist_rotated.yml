@@ -20,7 +20,7 @@ model:
     - 1024
     - 1024
     - 1024
-    out_activation: linear
+    out_activation: sigmoid
   encoder:
     activation:
     - elu
