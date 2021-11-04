@@ -10,12 +10,12 @@ model:
   arch: ae
   encoder:
       arch: fc_image
-      l_hidden: [512, 512, 512, ]
+      l_hidden: [1024, 1024, 1024, ]
       activation: ['elu', 'elu', 'elu', ]
       out_activation: 'linear'
   decoder:
       arch: fc_image
-      l_hidden: [512, 512, 512, ]
+      l_hidden: [1024, 1024, 1024, ]
       activation: ['elu', 'elu', 'elu', ]
       out_activation: 'linear'
   x_dim: 784

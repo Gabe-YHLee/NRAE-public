@@ -17,9 +17,9 @@ model:
     - elu
     arch: fc_image
     l_hidden:
-    - 512
-    - 512
-    - 512
+    - 1024
+    - 1024
+    - 1024
     out_activation: linear
   encoder:
     activation:
@@ -28,9 +28,9 @@ model:
     - elu
     arch: fc_image
     l_hidden:
-    - 512
-    - 512
-    - 512
+    - 1024
+    - 1024
+    - 1024
     out_activation: linear
   x_dim: 784
   z_dim: 1
