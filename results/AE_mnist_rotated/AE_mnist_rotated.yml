@@ -7,36 +7,36 @@ data:
     root: ./dataset
     rotate_range: 180
     type: rotate
-device: cuda:1
+device: cuda:0
 exp_name: AE_mnist_rotated
 logdir: results/AE_mnist_rotated
 model:
   arch: ae
   decoder:
     activation:
-    - elu
-    - elu
-    - elu
+    - relu
+    - relu
+    - relu
     arch: fc_image
     l_hidden:
-    - 1024
-    - 1024
-    - 1024
+    - 512
+    - 512
+    - 512
     out_activation: sigmoid
   encoder:
     activation:
-    - elu
-    - elu
-    - elu
+    - relu
+    - relu
+    - relu
     arch: fc_image
     l_hidden:
-    - 1024
-    - 1024
-    - 1024
+    - 512
+    - 512
+    - 512
     out_activation: linear
   x_dim: 784
   z_dim: 1
 optimizer:
-  lr: 0.0001
+  lr: 0.001
 training:
-  num_epochs: 2001
+  num_epochs: 1001

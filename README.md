@@ -29,6 +29,23 @@ The official repository for \<Neighborhood Reconstructing Autoencoders\> (Lee, K
 </center>
 
 ## Preview (rotated/shifted MNIST)
+<center>
+<div class="imgCollage">
+<span style="width: 100%"><img src="./results/AE_mnist_rotated/AE.gif" width="750 height="190"/></span>
+<span style="width: 100%"><img src="./results/NRAEL_mnist_rotated/NRAE.gif" width="750 height="190"/> </span>
+<span style="width: 100%"><img src="./results/NRAEQ_mnist_rotated/NRAE.gif" width="750 height="190"/> </span>
+</div>
+  <I>Figure 3: Generated sequences of rotated images by travelling the 1d latent spaces (Top: Vanilla AE, Middle: NRAE-L, Bottom: NRAE-Q). </I>
+</center>
+
+<center>
+<div class="imgCollage">
+<span style="width: 100%"><img src="./results/AE_mnist_shifted/AE.gif" width="750 height="190"/></span>
+<span style="width: 100%"><img src="./results/NRAEL_mnist_shifted/NRAE.gif" width="750 height="190"/> </span>
+<span style="width: 100%"><img src="./results/NRAEQ_mnist_shifted/NRAE.gif" width="750 height="190"/> </span>
+</div>
+  <I>Figure 3: Generated sequences of shifted images by travelling the 1d latent spaces (Top: Vanilla AE, Middle: NRAE-L, Bottom: NRAE-Q). </I>
+</center>
 
 ## Environment
 

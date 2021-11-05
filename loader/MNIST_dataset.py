@@ -59,7 +59,7 @@ class RotatedShiftedMNIST(MNIST):
             shift_range = self.kwargs.get('shift_range', 10)
             shift_range = [int(-abs(shift_range)), int(abs(shift_range))]
             for sh in range(shift_range[0], shift_range[1]):
-                transformed_data = transforms.functional.affine(img=data, angle=0, translate=[sh, 0], scale=0.5, shear=0)
+                transformed_data = transforms.functional.affine(img=data, angle=0, translate=[sh, 0], scale=0.7, shear=0)
                 data_list.append(transformed_data)
         data_list = torch.stack(data_list, dim=0)
         return data_list

@@ -12,17 +12,17 @@ model:
   arch: ae
   encoder:
       arch: fc_image
-      l_hidden: [1024, 1024, 1024, ]
-      activation: ['elu', 'elu', 'elu', ]
+      l_hidden: [512, 512, 512, ]
+      activation: ['relu', 'relu', 'relu', ]
       out_activation: 'linear'
   decoder:
       arch: fc_image
-      l_hidden: [1024, 1024, 1024, ]
-      activation: ['elu', 'elu', 'elu', ]
+      l_hidden: [512, 512, 512, ]
+      activation: ['relu', 'relu', 'relu', ]
       out_activation: 'sigmoid'
   x_dim: 784
   z_dim: 1
 optimizer:
-  lr: 0.0001
+  lr: 0.001
 training:
-  num_epochs: 2001
+  num_epochs: 1001

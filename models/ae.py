@@ -4,6 +4,8 @@ import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
 
+import imageio
+        
 def get_kernel_function(kernel):
     if kernel['type'] == 'binary':
         def kernel_func(x_c, x_nn):
@@ -74,7 +76,6 @@ class AE(nn.Module):
         return f_arr
 
     def mnist_visualize(self, data, device, sname, n_vis_step=16):
-        import imageio
         def make_frame(img):
             _, h, w = img.size()
             for c_ in range(3):
@@ -107,6 +108,7 @@ class AE(nn.Module):
         else: 
             title_ = f'{type(self).__name__}'
         plt.suptitle(title_, x=0.51, y=1.)
+        
         for i in range(total_vis_num):
             plt.subplot(2,total_vis_num,i+1)
             plt.axis('off')
@@ -119,6 +121,7 @@ class AE(nn.Module):
         x = np.linspace(-0.5,0.5,total_vis_num)
         y = 0*x
         plt.plot(x, y, color='0.9', linewidth=3)
+        plt.text(.0, -0.05, 'Generated Images (top) by travelling the 1D Latent Space (bottom)', ha='center')
         images = []
         for i in range(total_vis_num):
             for j in range(total_vis_num):
