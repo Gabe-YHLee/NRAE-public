@@ -60,18 +60,19 @@ The project is developed under a standard PyTorch environment.
 - torch 1.8.0
 - CUDA 11.1
 
-## Running (synthetic data)
+## Running 
 ```
-python train_synthetic.py --config configs/config_name.yml --device 0
+python train_{X}.py --config configs/{A}_{B}_{C}.yml --device 0
 ```
-The `config_name.yml` is one of the files in `configs/` (e.g., `AE_toy_denoising.yml`). 
+- `X` is either `synthetic` or `MNIST`
+- `A` is either `AE`, `NRAEL`, or `NRAEQ`
+- `B` is either `toy` or `mnist`
+- If `B` is `toy`, then `C` is either `denoising` or `geometry_preserving`. Elseif `B` is `mnist`, then `C` is either `rotated` or `shifted`.
 
 ### Playing with the code
-- You can add a new type of 2d dataset in `loader.synthetic_dataset.SyntheticData.get_data` (currently, we have `sincurve` and `swiss_roll`).
-- The most significant parameters requiring tuning include: i) the number of nearest neighbors for graph construction `num_nn` and ii) kernel parameter `lambda` (you can find these parameters in `configs/NRAEL_toy_denoising.yml` for example). 
+- The most important parameters requiring tuning include: i) the number of nearest neighbors for graph construction `num_nn` and ii) kernel parameter `lambda` (you can find these parameters in `configs/NRAEL_toy_denoising.yml` for example). 
 - We empirically observe that setting as `include_center=True` (when defining data loader) has performance advantange. 
-
-## Running (rotaed/shifted MNIST)
+- You can add a new type of 2d synthetic dataset in `loader.synthetic_dataset.SyntheticData.get_data` (currently, we have `sincurve` and `swiss_roll`).
 
 ## Citation
 To be updated.
