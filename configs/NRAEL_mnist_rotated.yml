@@ -4,31 +4,33 @@ data:
     dataset: mnist
     root: './dataset'
     type: rotate
-    digit: 7
+    num_rotate: 100
+    rotate_range: 180
+    digit: 3
     batch_size: 50
     graph: 
-      include_center: False
-      replace: True
-      num_nn: 30
+      include_center: True
+      replace: False
+      num_nn: 10
       bs_nn: 2
 model:
   arch: nrael
   encoder:
       arch: fc_image
       l_hidden: [512, 512, 512, ]
-      activation: ['elu', 'elu', 'elu', ]
+      activation: ['relu', 'relu', 'relu', ]
       out_activation: 'linear'
   decoder:
       arch: fc_image
       l_hidden: [512, 512, 512, ]
-      activation: ['elu', 'elu', 'elu', ]
-      out_activation: 'linear'
+      activation: ['relu', 'relu', 'relu', ]
+      out_activation: 'sigmoid'
   x_dim: 784
   z_dim: 1
   kernel: 
     type: 'binary'
-    lambda: 0.01 
+    lambda: 0.1 
 optimizer:
-  lr: 0.0001
+  lr: 0.001
 training:
-  num_epochs: 2001
+  num_epochs: 1001

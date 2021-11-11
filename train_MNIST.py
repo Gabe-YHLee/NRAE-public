@@ -60,7 +60,7 @@ def run(cfg):
             scheduler.step()
         
     # add visulizing at end of training
-    model.mnist_visualize(d_datasets['training'].data, device, os.path.join(cfg['logdir'], 'gif', f'{type(model).__name__}'))
+    model.mnist_visualize(d_datasets['training'].data, device, os.path.join(cfg['logdir'], f'{type(model).__name__}.gif'))
     
 def parse_arg_type(val):
     if val.isnumeric():

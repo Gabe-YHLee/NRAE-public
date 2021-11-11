@@ -22,17 +22,14 @@ class RotatedShiftedMNIST(MNIST):
 
         assert type in ["rotate", "shift"]
 
-        # Dataset download and loading
-        self.root = root
-        if download:
-            self.download()
-        if not self._check_exists():
-            raise RuntimeError(
-                "Dataset not found." + " You can use download=True to download it"
-            )
-        data, targets = torch.load(
-            os.path.join(self.processed_folder, self.training_file)
+        super(RotatedShiftedMNIST, self).__init__(
+            root,
+            download=download,
         )
+
+        data = self.data
+        targets = self.targets
+
         data = (data.to(torch.float32) / 255).unsqueeze(1) # [data_size, 1, 28, 28]
 
         for idx, target in enumerate(targets):
@@ -41,25 +38,28 @@ class RotatedShiftedMNIST(MNIST):
         data = data[idx]
 
         # Get dataset
+        self.kwargs = kwargs
         self.data = self.get_data(type, data)
         print(f'MNIST dataset ready. {self.data.size()}')
         self.graph = graph
         if self.graph: 
             self.set_graph()
-            
+
     def get_data(self, type, data):
         '''Generate rotated or shifted MNIST dataset
         '''
         data_list = []
         if type == 'rotate':
-            num_rotate = 100
-            for rot in [180*i/num_rotate for i in range(num_rotate)]:
-                transformed_data = transforms.functional.affine(img=data, angle=rot, translate=[0, 0], scale=0.5, shear=0)
+            num_rotate = self.kwargs.get('num_rotate', 100)
+            rotate_range = self.kwargs.get('rotate_range', 180)
+            for rot in [rotate_range*i/num_rotate for i in range(num_rotate)]:
+                transformed_data = transforms.functional.affine(img=data, angle=rot, translate=[0, 0], scale=1., shear=0)
                 data_list.append(transformed_data)
         elif type == 'shift':
-            shift_range=[-10,10]
+            shift_range = self.kwargs.get('shift_range', 10)
+            shift_range = [int(-abs(shift_range)), int(abs(shift_range))]
             for sh in range(shift_range[0], shift_range[1]):
-                transformed_data = transforms.functional.affine(img=data, angle=0, translate=[sh, 0], scale=0.5, shear=0)
+                transformed_data = transforms.functional.affine(img=data, angle=0, translate=[sh, 0], scale=0.7, shear=0)
                 data_list.append(transformed_data)
         data_list = torch.stack(data_list, dim=0)
         return data_list
@@ -97,11 +97,3 @@ class RotatedShiftedMNIST(MNIST):
         else:
             x = self.data[idx]
             return x
-        
-    @property
-    def raw_folder(self):
-        return os.path.join(self.root, "MNIST", "raw")
-
-    @property
-    def processed_folder(self):
-        return os.path.join(self.root, "MNIST", "processed")
