@@ -7,7 +7,7 @@ The official repository for \<Neighborhood Reconstructing Autoencoders\> (Lee, K
 - *15-mins video: [TBU]()*  
 - *Slides: [./doc/NRAE_talk.pdf](./doc/NRAE_talk.pdf)*  
 - *Poster: [TBU]()*  
-- *OpenReview: [TBU]()*  
+- *OpenReview: [TBU](https://openreview.net/forum?id=_kaH2bAI3O&referrer=%5BAuthor%20Console%5D(%2Fgroup%3Fid%3DNeurIPS.cc%2F2021%2FConference%2FAuthors%23your-submissions))*  
 
 ## Preview (synthetic data)
 <center>
