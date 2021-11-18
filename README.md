@@ -75,4 +75,13 @@ python train_{X}.py --config configs/{A}_{B}_{C}.yml --device 0
 - You can add a new type of 2d synthetic dataset in `loader.synthetic_dataset.SyntheticData.get_data` (currently, we have `sincurve` and `swiss_roll`).
 
 ## Citation
-To be updated.
+If you found this library useful in your research, please consider citing:
+```
+@article{lee2021neighborhood,
+  title={Neighborhood Reconstructing Autoencoders},
+  author={Lee, Yonghyeon and Kwon, Hyeokjun and Park, Frank},
+  journal={Advances in Neural Information Processing Systems},
+  volume={34},
+  year={2021}
+}
+```
