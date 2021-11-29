@@ -5,7 +5,7 @@ The official repository for \<Neighborhood Reconstructing Autoencoders\> (Lee, K
 
 - *[Paper](https://papers.nips.cc/paper/2021/hash/05311655a15b75fab86956663e1819cd-Abstract.html)*  
 - *[15-mins video: TBU]*  
-- *[Slides]([./doc/NRAE_talk.pdf](https://drive.google.com/file/d/1zpr_ippcoU8kdsOSQJmrphVKOnEYLFzk/view?usp=sharing))*  
+- *[Slides](https://drive.google.com/file/d/1zpr_ippcoU8kdsOSQJmrphVKOnEYLFzk/view?usp=sharing)*  
 - *[Poster](https://drive.google.com/file/d/1_tm-jWh5EzHkxBECtlgaifVR-aZGXFpH/view?usp=sharing)*  
 - *[OpenReview](https://openreview.net/forum?id=_kaH2bAI3O&referrer=%5BAuthor%20Console%5D(%2Fgroup%3Fid%3DNeurIPS.cc%2F2021%2FConference%2FAuthors%23your-submissions))*  
 
