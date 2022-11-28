@@ -20,7 +20,7 @@ def get_kernel_function(kernel):
             eps = 1.0e-12
             index = torch.norm(x_c.unsqueeze(1)-x_nn, dim=2) > eps
             output = torch.ones(bs, num_nn).to(x_c)
-            output[~index] = kernel['lambda']
+            output[index] = kernel['lambda']
             return output # (bs, num_nn)
     return kernel_func
     
