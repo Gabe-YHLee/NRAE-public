@@ -29,7 +29,7 @@ model:
   z_dim: 1
   kernel: 
     type: 'binary'
-    lambda: 0.1 
+    lambda: 10
 optimizer:
   lr: 0.001
 training:
