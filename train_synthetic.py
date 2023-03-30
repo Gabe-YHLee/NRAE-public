@@ -35,7 +35,9 @@ def run(cfg):
         d_datasets['training'].data,
         d_datasets['test'].data
     )
-    if cfg["data"]["training"]["graph"]:
+    
+    graph_config = cfg["data"]["training"].get("graph", None)
+    if graph_config is not None:
         graph_fig = d_datasets['training'].visualize_graph(
             d_datasets['training'].data,
             d_datasets['test'].data,
@@ -44,7 +46,7 @@ def run(cfg):
         
     # Setup Model
     model = get_model(cfg['model']).to(device)
-    if cfg["data"]["training"]["graph"]:
+    if graph_config is not None:
         model.dist_indices = d_datasets['training'].dist_mat_indices
     
     # Iterative Model Update
@@ -55,7 +57,7 @@ def run(cfg):
     list_of_images = []
     for epoch in range(cfg['training']['num_epochs']):
         training_loss = []
-        if cfg["data"]["training"]["graph"]:
+        if graph_config is not None:
             for x, x_nn in d_dataloaders['training']:
                 train_dict = model.train_step(x.to(device), x_nn.to(device), optimizer)
                 training_loss.append(train_dict["loss"])
@@ -87,7 +89,7 @@ def run(cfg):
     f_arr = np.array(f.canvas.renderer._renderer)
     plt.close()
     list_figs = [f_arr]*10 + [training_data_fig]*10 
-    if cfg["data"]["training"]["graph"]:
+    if graph_config is not None:
         list_figs = list_figs + [graph_fig]*10
     list_figs = list_figs + list_of_images
     list_figs = list_figs + [list_of_images[-1]]*20
